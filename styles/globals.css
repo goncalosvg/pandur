@@ -1,16 +1,82 @@
-html,
+@import url('https://fonts.googleapis.com/css?family=Inter:100,200,300,400,500,600,700&display=swap');
+
+@font-face {
+  font-family: "Silka-Bold";
+  src: url("/fonts/silka-bold-webfont.ttf");
+  font-weight: 700;
+}
+
 body {
-  padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  padding: 0;
+  background: var(--main-background);
+  outline: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, main, nav, section, summary {
+  display: block;
+}
+
+*, *:after, *:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+strong {
+  font-weight: unset !important;
+  font-style: unset !important;
+}
+
+li {
+  list-style: none;
+  display: table-cell;
 }
 
 a {
-  color: inherit;
+  font-family: var(--main-font);
   text-decoration: none;
+  transition: 0.3s all;
+  -webkit-transition: 0.3s all;
+  -moz-transition: 0.3s all;
+  -o-transition: 0.3s all;
 }
 
-* {
+.wrapper {
+  width: 100%;
+  padding-right: 9%;
+  padding-left: 9%;
   box-sizing: border-box;
+}
+
+.gradient-text {
+  background-color: #fff;
+  background-image: var(--gradient-text);
+  background-size: 1%;
+  background-repeat: repeat;
+  background-clip: border-box;
+  display: inline-block;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; 
+  -moz-background-clip: text;
+  -moz-text-fill-color: transparent;
+  text-shadow: 0px 0px #ffffffff;
+}
+
+:root {
+  --main-color: #1F60F3;
+  --main-background: #10182C;
+  --main-cards: #162037;
+  --main-text: #666786;
+  --main-inputs: #0C1324;
+
+  --header-font: 'Silka-Bold', sans-serif;
+  --body-font: 'Inter', sans-serif;
+
+  --gradient-text: linear-gradient(89.76deg, #5380E3 -36.44%, #004BF4 189.29%);
+  --main-shadow: 3px 5px 30px rgba(16, 16, 28, 0.69);
 }
