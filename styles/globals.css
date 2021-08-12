@@ -64,7 +64,7 @@ a {
   -webkit-text-fill-color: transparent; 
   -moz-background-clip: text;
   -moz-text-fill-color: transparent;
-  text-shadow: 0px 0px #ffffffff;
+  text-shadow: 0px 0px #00000000;
 }
 
 :root {
@@ -77,6 +77,41 @@ a {
   --header-font: 'Silka-Bold', sans-serif;
   --body-font: 'Inter', sans-serif;
 
+  --hover-state: rgb(22, 32, 55, 0.500);
+
+  --main-radius: 12px;
   --gradient-text: linear-gradient(89.76deg, #5380E3 -36.44%, #004BF4 189.29%);
-  --main-shadow: 3px 5px 30px rgba(16, 16, 28, 0.69);
+  --main-shadow: 3px 5px 30px rgba(17, 17, 31, 0.4);
+}
+
+.align-center {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.firebaseui-idp-button, 
+.firebaseui-tenant-button {
+  background: var(--main-color) !important;
+  padding: 20px 20px !important;
+  width: 400px !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--main-radius) !important;
+  transition: 0.3s all !important;
+}
+
+.firebaseui-idp-text {
+  font-family: var(--header-font) !important;
+}
+
+.firebaseui-idp-icon {
+  width: 25px !important;
+  height: 25px !important;
+}
+
+.firebaseui-idp-button:hover {
+  transform: scale(1.1);
 }
