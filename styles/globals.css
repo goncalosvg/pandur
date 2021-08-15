@@ -72,7 +72,13 @@ a {
   --main-background: #10182C;
   --main-cards: #162037;
   --main-text: #666786;
+  --main-text-low-opacity: rgb(102, 103, 134, 0.500);
   --main-inputs: #0C1324;
+
+  --error-background: rgba(230, 25, 25, 0.200);
+  --error-text: rgba(230, 25, 25);
+  --success-background: rgb(36, 199, 36, 0.200);
+  --success-text: rgb(36, 199, 36);
 
   --header-font: 'Silka-Bold', sans-serif;
   --body-font: 'Inter', sans-serif;

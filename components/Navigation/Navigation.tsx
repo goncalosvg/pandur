@@ -1,8 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import firebase from '../../firebase/clientApp';
+
+import { firebase } from '../../firebase/clientApp';
 import { useAuthState } from 'react-firebase-hooks/auth';
+
+const db = firebase.database();
 
 import styles from './Navigation.module.css';
 
@@ -13,7 +16,6 @@ const uiConfig = {
 
 function Component() {
     
-    /* isLoggedIn State */
     const [user, loading, error] = useAuthState(firebase.auth());
 
     const [showDropdown, setShowDropdown] = useState(false);
@@ -35,20 +37,108 @@ function Component() {
     const [showModal, setShowModal] = useState(false);
     let assignClassOpenModal = showModal ? `${styles["active"]}` : "";
 
+    /* SEND A QUESTION HANDLER */
+
+    const [questionTitle, setQuestionTitle] = useState("")
+    const [questionDescription, setQuestionDescription] = useState("")
+    const [submitted, setSubmitted] = useState(false)
+    
+    function formErrorHandler() {
+        let errorDivision = document.querySelector("#form-error");
+        errorDivision!.style.display = "block"
+    }
+    function formSuccessHandler() {
+        let errorDivision = document.querySelector("#form-error");
+        errorDivision!.style.display = "none"
+        let sucessDivision = document.querySelector("#form-success");
+        sucessDivision!.style.display = "block"
+    }
+
+    async function handleSendQuestion(event: any){
+        event.preventDefault();
+
+        if(!questionTitle || !questionDescription) {
+            formErrorHandler();
+        } else {
+
+            const question = {
+                title: questionTitle,
+                description: questionDescription,
+                author: {
+                    name: user?.displayName,
+                    avatar: user?.photoURL
+                }
+            };
+
+            const questionsRef = db.ref(`Questions/${user?.uid}`)
+            const newQuestionRef = questionsRef.push(question);
+
+            newQuestionRef.set({
+                question
+            });
+
+            setSubmitted(true);
+            setQuestionTitle('');
+            setQuestionDescription('');
+            formSuccessHandler();
+
+            // TODO Redirect user to question page;
+
+        }
+    }
+
     return (
         <header>
 
-            <div className={`${styles["modaloverlay"]} ${assignClassOpenModal}`}>
-                <div className={styles.modalclose} onClick={() => setShowModal(false)}></div>
-                <div className={styles.modal}>
-                    <div className={styles.close} onClick={() => setShowModal(false)}></div>
-                    <div className={styles.content}>
-                        <h2>Sign up</h2>
-                        <p>Create an account using one of these!</p>
-                        <div className={styles.aligncenter}><StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} /></div>
+            {(() => {
+                if (user) {
+                return (
+                    <div className={`${styles["modaloverlay"]} ${assignClassOpenModal}`}>
+                        <div className={styles.modalclose} onClick={() => setShowModal(false)}></div>
+                        <div className={styles.modal}>
+                            <div className={styles.close} onClick={() => setShowModal(false)}></div>
+                            <div className={styles.content}>
+                                <h2>Create a question</h2>
+                                <p>Create a new question!</p>
+                                <div className={styles.error} id="form-error">You must fill both forms.</div>
+                                <div className={styles.success} id="form-success">Your question was created.</div>
+                                <form onSubmit={handleSendQuestion}>
+                                    <input
+                                        name="title"
+                                        type="text"
+                                        placeholder="Question title"
+                                        value={questionTitle}
+                                        onChange={(e) => setQuestionTitle(e.target.value)}
+                                    />
+                                    <input
+                                        name="description"
+                                        type="text"
+                                        placeholder="Question description"
+                                        value={questionDescription}
+                                        onChange={(e) => setQuestionDescription(e.target.value)}
+                                    />
+                                    <button className={styles.sendquestion} type="submit">Send a question</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                )
+                } else {
+                return (
+                    <div className={`${styles["modaloverlay"]} ${assignClassOpenModal}`}>
+                        <div className={styles.modalclose} onClick={() => setShowModal(false)}></div>
+                        <div className={styles.modal}>
+                            <div className={styles.close} onClick={() => setShowModal(false)}></div>
+                            <div className={styles.content}>
+                                <h2>Sign up</h2>
+                                <p>Create an account using one of these!</p>
+                                <div className={styles.aligncenter}><StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={firebase.auth()} /></div>
+                            </div>
+                        </div>
+                    </div>
+                )
+                }
+            })()}
 
             <nav id={styles.nav}>
                 <div className="wrapper">
@@ -91,7 +181,7 @@ function Component() {
                             )}
 
                             {user
-                                ? <button className={styles.askaquestion}>Ask a question</button>
+                                ? <button className={styles.askaquestion} onClick={() => setShowModal(b => !b)}>Ask a question</button>
                                 : <button className={styles.askaquestion} onClick={() => setShowModal(b => !b)}>Ask a question</button>
                             }
 
